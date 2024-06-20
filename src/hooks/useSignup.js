@@ -1,12 +1,18 @@
 import { useState } from "react";
 import { fireauth } from "../firebase/config";
 import { useAuthContext } from "../hooks/useAuthContext";
+import { useEffect } from "react";
 
 export const useSignup = () => {
   const { dispatch } = useAuthContext();
 
   const [error, setError] = useState();
   const [isPending, setIsPending] = useState(false);
+  const [isCancelled, setIsCanclled] = useState(false);
+
+  useEffect(() => {
+    return () => setIsCanclled(true);
+  }, []);
 
   const signup = async (email, password, displayName) => {
     setError(null);
@@ -30,8 +36,10 @@ export const useSignup = () => {
       //유저정보를 state에 저장한다.
       dispatch({ type: "LOGIN", payload: res.user });
 
-      setError(null);
-      setIsPending(false);
+      if (!isCancelled) {
+        setError(null);
+        setIsPending(false);
+      }
     } catch (err) {
       console.log(err.message);
       setError(err.message);
