@@ -1,14 +1,17 @@
 import { useState } from "react";
 import styles from "./Signup.module.css";
+import { useSignup } from "../../hooks/useSignup";
 
-export default function Signup() {
+function Signup() {
+  const { signup, error, isPending } = useSignup();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(email, password, name);
+    signup(email, password, name);
   };
 
   return (
@@ -38,8 +41,17 @@ export default function Signup() {
           />
         </label>
 
-        <button className="btn">가입</button>
+        {/* 가입 진행 중일 경우에는 로딩 버튼만 나옴 */}
+        {!isPending && <button className="btn">가입</button>}
+        {isPending && (
+          <button classNAme="btn" disabled>
+            loading
+          </button>
+        )}
+        {error && <p>{error}</p>}
       </form>
     </div>
   );
 }
+
+export default Signup;
