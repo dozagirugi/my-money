@@ -1,13 +1,11 @@
-import styles from "./Navbar.module.css";
-import React from "react";
 import { Link } from "react-router-dom";
+import styles from "./Navbar.module.css";
 import { useLogout } from "../../hooks/useLogout";
 import { useAuthContext } from "../../hooks/useAuthContext";
 
-export default function Navbar() {
+function Navbar() {
   const { logout } = useLogout();
   const { user } = useAuthContext();
-
   return (
     <nav className={styles.navbar}>
       <ul>
@@ -19,7 +17,6 @@ export default function Navbar() {
             <li>
               <Link to="/login">로그인</Link>
             </li>
-
             <li>
               <Link to="/signup">가입</Link>
             </li>
@@ -39,3 +36,5 @@ export default function Navbar() {
     </nav>
   );
 }
+
+export default Navbar;
